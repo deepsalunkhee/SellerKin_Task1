@@ -135,5 +135,5 @@ app.get("/callback", async (req, res) => {
 
 
 app.listen(port, () => {
-    console.log(`Etsy Example app now listening at... ${baseurl}`);
+    console.log(`sellerkin listening at... ${baseurl}`);
 });
