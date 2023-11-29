@@ -2,6 +2,10 @@ const express = require('express');
 const fetch = require("node-fetch");
 const crypto = require("crypto");
 const dotenv = require('dotenv');
+const cors = require('cors');
+
+
+
 
 
 let tokenData = '';
@@ -15,6 +19,7 @@ const contexts = 'listings_r'
 
 
 const app = express();
+app.use(cors());
 
 
 
@@ -76,22 +81,71 @@ app.get('/list', async (req, res) => {
         const response = await fetch('https://openapi.etsy.com/v3/application/listings/active', requestOptions);
         //waith for two seconds
         await new Promise(resolve => setTimeout(resolve, 2000));
-        
         if (response.ok) {
-            const listings = await response.json(); 
-            
-
-          
-            res.send(listings); 
+            const listings = await response.json();
+            res.status(200).json(listings); // Return listings data as JSON
         } else {
-            
-            res.send("Request failed with status: " + response.status);
+            const errorData = await response.json(); // Parse error response if available
+            const errorMessage = errorData.message || 'Request failed'; // Get error message or use a default message
+            res.status(response.status).json({ error: errorMessage }); // Return structured error message
         }
     } catch (error) {
         
         res.send(error);
     }
   });
+
+  app.get('/images', async (req, res) => {
+    const { id } = req.query; // Access 'id' from query parameters
+    const accessToken = tokenData.access_token; // Retrieve stored access token
+    const requestOptions = {
+        method: 'GET',
+        headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "x-api-key": apitoken,
+        },
+    };
+     
+    try {
+        const response = await fetch(`https://openapi.etsy.com/v3/application/listings/${id}/images`, requestOptions);
+        if (response.ok) {
+            const listings = await response.json();
+            res.status(200).json(listings); // Return listings data as JSON
+        } else {
+            const errorData = await response.json(); // Parse error response if available
+            const errorMessage = errorData.message || 'Request failed'; // Get error message or use a default message
+            res.status(response.status).json({ error: errorMessage }); // Return structured error message
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' }); // Handle internal server error
+    }
+});
+
+app.get('/economic', async (req, res) => {
+    const { id } = req.query; // Access 'id' from query parameters
+    const accessToken = tokenData.access_token; // Retrieve stored access token
+    const requestOptions = {
+        method: 'GET',
+        headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "x-api-key": apitoken,
+        },
+    };
+     
+    try {
+        const response = await fetch(`https://openapi.etsy.com/v3/application/listings/${id}`, requestOptions);
+        if (response.ok) {
+            const listings = await response.json();
+            res.status(200).json(listings); // Return listings data as JSON
+        } else {
+            const errorData = await response.json(); // Parse error response if available
+            const errorMessage = errorData.message || 'Request failed'; // Get error message or use a default message
+            res.status(response.status).json({ error: errorMessage }); // Return structured error message
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' }); // Handle internal server error
+    }
+});
 
 
 const clientID = apitoken;
