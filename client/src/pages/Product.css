@@ -1,9 +1,7 @@
-
-
 .card-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* Adjust the gap between cards as needed */
-    justify-content: space-around; /* Align cards evenly across the container */
+    gap: 20px; 
+    justify-content: space-around;
   }
   
