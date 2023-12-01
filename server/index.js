@@ -11,7 +11,7 @@ async function startServer() {
     let tokenData = "";
 
     const port = 3000;
-    const baseurl = `http://localhost:${port}`;
+    const baseurl = `seller-kin-task1-server.vercel.app`;
     dotenv.config();
     const apitoken = process.env.API_TOKEN;
     const contexts = "listings_r";
@@ -31,7 +31,7 @@ async function startServer() {
     const codeChallenge = base64URLEncode(sha256(codeVerifier));
     const state = Math.random().toString(36).substring(7);
 
-    const buildMyUrl = `https://www.etsy.com/oauth/connect?response_type=code&redirect_uri=${baseurl}/callback&scope=${contexts}&client_id=${apitoken}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+    const buildMyUrl = `https://www.etsy.com/oauth/connect?response_type=code&redirect_uri=seller-kin-task1-server.vercel.app/callback&scope=${contexts}&client_id=${apitoken}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 
     app.get("/ping", async (req, res) => {
       const requestOptions = {
@@ -148,7 +148,7 @@ async function startServer() {
 
     const clientID = apitoken;
     const clientVerifier = codeVerifier;
-    const redirectUri = "http://localhost:3000/callback";
+    const redirectUri = "seller-kin-task1-server.vercel.app/callback";
 
     app.get("/callback", async (req, res) => {
       const authCode = req.query.code;
