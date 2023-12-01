@@ -7,7 +7,7 @@ const Products = () => {
   const [data, setData] = useState([]);
 
   const sendRequestToEndpoint = useCallback(() => {
-    fetch('http://localhost:3000/', {
+    fetch('seller-kin-task1-server.vercel.app/', {
       method: 'GET', 
     })
     .then(response => {
@@ -24,7 +24,7 @@ const Products = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:3000/list');
+      const response = await fetch('seller-kin-task1-server.vercel.app/list');
       if (response.ok) {
         const result = await response.json();
         setData(result.results || []); 

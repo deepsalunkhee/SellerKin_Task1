@@ -16,7 +16,7 @@ const Card = ({ listing }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/images?id=${listing.listing_id}`);
+        const response = await fetch(`seller-kin-task1-server.vercel.app/images?id=${listing.listing_id}`);
         if (response.ok) {
           const result = await response.json();
           setImages(result.results || []); 
@@ -34,7 +34,7 @@ const Card = ({ listing }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/economic?id=${listing.listing_id}`);
+        const response = await fetch(`seller-kin-task1-server.vercel.app/economic?id=${listing.listing_id}`);
         if (response.ok) {
           const result = await response.json();
           setRevenue(result || []);
