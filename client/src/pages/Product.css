@@ -8,43 +8,11 @@
   .product-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center content horizontally */
-    justify-content: center; /* Center content vertically */
-    min-height: 100vh; /* Ensures the container takes the full height of the viewport */
+    align-items: center;
+    justify-content: center; 
+    min-height: 100vh; 
     gap:10px;
     background-color: beige;
   }
-
-  /* Define the snow animation */
-@keyframes snow {
-  0% { transform: translateY(-100vh); }
-  100% { transform: translateY(100vh); }
-}
-
-/* Style for the snow animation container */
-.snow-animation-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1; /* Place the snow animation behind the other content */
-  pointer-events: none; /* Prevent interaction with the animation */
-}
-
-/* Apply the snow animation to the animation container */
-.snow-animation-container::before {
-  content: "";
-  position: absolute;
-  top: -50px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, transparent 50%);
-  animation: snow 10s linear infinite; /* Adjust the animation duration and properties */
-  pointer-events: none; /* Prevent interaction with the animation */
-}
-
-
 
   

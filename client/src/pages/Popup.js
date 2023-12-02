@@ -1,5 +1,5 @@
 import React from 'react';
-import './Popup.css'; // Import the CSS file for Popup component
+import './Popup.css'; 
 
 const Popup = ({ selectedListing, closePopup }) => {
   return (
@@ -9,9 +9,9 @@ const Popup = ({ selectedListing, closePopup }) => {
           &times;
         </span>
         <h2>{selectedListing.title}</h2>
-        {/* Display other details from the selected listing */}
+       
         <p>We can display any specific info that we would like to</p>
-        {/* Add more details as needed */}
+        
       </div>
     </div>
   );

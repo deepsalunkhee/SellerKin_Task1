@@ -16,8 +16,8 @@ const Products = () => {
   const [selectedListing, setSelectedListing] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
  
-  //const server = 'http://localhost:3000';
-  const server = 'https://seller-kin-task1-server.vercel.app';
+  const server = 'http://localhost:3000';
+  //const server = 'https://seller-kin-task1-server.vercel.app';
   
 
   const sendRequestToEndpoint = useCallback(() => {
@@ -51,8 +51,8 @@ const Products = () => {
   }, []);
 
   useEffect(() => {
-    //sendRequestToEndpoint(); // Send request to server on initial render
-    fetchData(); // Fetch data on initial render
+    sendRequestToEndpoint(); // Send request to server on initial render
+    //fetchData(); // Fetch data on initial render
 
     
 
@@ -99,7 +99,7 @@ const Products = () => {
 
       />
       <Header />
-      <Search handleSearch={handleSearch} /> {/* Include the Search component */}
+      <Search handleSearch={handleSearch} />
 
       <div className="card-container">
         {filteredData.map((listing, index) => (

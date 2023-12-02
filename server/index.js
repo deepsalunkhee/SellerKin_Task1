@@ -13,7 +13,7 @@ async function startServer() {
 
     const port = 3000;
     const baseurl = `https://seller-kin-task1-server.vercel.app`;
-     //const baseurl = `http://localhost:${port}`;
+    // const baseurl = `http://localhost:${port}`;
     dotenv.config();
     const apitoken = process.env.API_TOKEN;
     const contexts = "listings_r";
@@ -65,7 +65,7 @@ async function startServer() {
     });
 
     app.get("/list", async (req, res) => {
-      const accessToken = tokenData.access_token; // Retrieve stored access token
+      const accessToken = tokenData.access_token
       const requestOptions = {
         method: "GET",
         headers: {
@@ -83,11 +83,11 @@ async function startServer() {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         if (response.ok) {
           const listings = await response.json();
-          res.status(200).json(listings); // Return listings data as JSON
+          res.status(200).json(listings); 
         } else {
-          const errorData = await response.json(); // Parse error response if available
-          const errorMessage = errorData.message || "Request failed"; // Get error message or use a default message
-          res.status(response.status).json({ error: errorMessage }); // Return structured error message
+          const errorData = await response.json(); 
+          const errorMessage = errorData.message || "Request failed"; 
+          res.status(response.status).json({ error: errorMessage }); 
         }
       } catch (error) {
         res.send(error);
@@ -95,8 +95,8 @@ async function startServer() {
     });
 
     app.get("/images", async (req, res) => {
-      const { id } = req.query; // Access 'id' from query parameters
-      const accessToken = tokenData.access_token; // Retrieve stored access token
+      const { id } = req.query; 
+      const accessToken = tokenData.access_token; 
       const requestOptions = {
         method: "GET",
         headers: {
@@ -112,20 +112,20 @@ async function startServer() {
         );
         if (response.ok) {
           const listings = await response.json();
-          res.status(200).json(listings); // Return listings data as JSON
+          res.status(200).json(listings); 
         } else {
-          const errorData = await response.json(); // Parse error response if available
-          const errorMessage = errorData.message || "Request failed"; // Get error message or use a default message
-          res.status(response.status).json({ error: errorMessage }); // Return structured error message
+          const errorData = await response.json(); 
+          const errorMessage = errorData.message || "Request failed"; 
+          res.status(response.status).json({ error: errorMessage })
         }
       } catch (error) {
-        res.status(500).json({ error: "Internal server error" }); // Handle internal server error
+        res.status(500).json({ error: "Internal server error" }); 
       }
     });
 
     app.get("/economic", async (req, res) => {
-      const { id } = req.query; // Access 'id' from query parameters
-      const accessToken = tokenData.access_token; // Retrieve stored access token
+      const { id } = req.query; 
+      const accessToken = tokenData.access_token; 
       const requestOptions = {
         method: "GET",
         headers: {
@@ -141,14 +141,14 @@ async function startServer() {
         );
         if (response.ok) {
           const listings = await response.json();
-          res.status(200).json(listings); // Return listings data as JSON
+          res.status(200).json(listings); 
         } else {
-          const errorData = await response.json(); // Parse error response if available
-          const errorMessage = errorData.message || "Request failed"; // Get error message or use a default message
-          res.status(response.status).json({ error: errorMessage }); // Return structured error message
+          const errorData = await response.json(); 
+          const errorMessage = errorData.message || "Request failed"; 
+          res.status(response.status).json({ error: errorMessage });
         }
       } catch (error) {
-        res.status(500).json({ error: "Internal server error" }); // Handle internal server error
+        res.status(500).json({ error: "Internal server error" });
       }
     });
 
@@ -202,12 +202,12 @@ async function startServer() {
       }
     };
 
-    // Function to send a request to /list endpoint every 20 minutes
+    
     const intervalId = setInterval(sendRequestToEndpoint, 20 * 60 * 1000);
 
-    // Handle server shutdown to clear the interval
+    
     process.on("SIGINT", () => {
-      clearInterval(intervalId); // Clear interval on server shutdown
+      clearInterval(intervalId);
       process.exit(0);
     });
 
