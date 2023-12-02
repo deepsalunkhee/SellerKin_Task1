@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './Cards.css'; 
+import './Cards.css'; // Import the CSS file for Cards component
 
 const Card = ({ listing, openPopup }) => {
   const [images, setImages] = useState([]);

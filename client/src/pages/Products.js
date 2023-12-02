@@ -21,7 +21,7 @@ const Products = () => {
   
 
   const sendRequestToEndpoint = useCallback(() => {
-    fetch(`${server}/auth`, {
+    fetch(`${server}/`, {
       method: 'GET', 
     })
     .then(response => {
@@ -51,8 +51,8 @@ const Products = () => {
   }, []);
 
   useEffect(() => {
-    sendRequestToEndpoint(); // Send request to server on initial render
-    //fetchData(); // Fetch data on initial render
+    //sendRequestToEndpoint(); // Send request to server on initial render
+    fetchData(); // Fetch data on initial render
 
     
 
