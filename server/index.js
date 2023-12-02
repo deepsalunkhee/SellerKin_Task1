@@ -6,7 +6,7 @@ const cors = require("cors");
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:3001", // Update with your frontend URL
+    origin: "https://seller-kin-task1-client.vercel.app", // Update with your frontend URL
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
