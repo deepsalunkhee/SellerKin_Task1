@@ -4,13 +4,7 @@ const crypto = require("crypto");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const app = express();
-app.use(
-  cors({
-    origin: "https://seller-kin-task1-client.vercel.app", // Update with your frontend URL
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true,
-  })
-);
+app.use(cors());
 
 async function startServer() {
   try {
