@@ -6,13 +6,14 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 
+
 async function startServer() {
   try {
     let tokenData = "";
 
     const port = 3000;
-    const baseurl = `https://seller-kin-task1-server.vercel.app`;
-    // const baseurl = `http://localhost:${port}`;
+    //const baseurl = `https://seller-kin-task1-server.vercel.app`;
+     const baseurl = `http://localhost:${port}`;
     dotenv.config();
     const apitoken = process.env.API_TOKEN;
     const contexts = "listings_r";

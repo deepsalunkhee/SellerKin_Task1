@@ -17,7 +17,7 @@ const Products = () => {
   const [showPopup, setShowPopup] = useState(false);
  
   //const server = 'http://localhost:3000';
-  const server = 'seller-kin-task1-server.vercel.app';
+  const server = 'https://seller-kin-task1-server.vercel.app';
   
 
   const sendRequestToEndpoint = useCallback(() => {

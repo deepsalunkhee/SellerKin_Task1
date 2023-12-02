@@ -5,7 +5,7 @@ const Card = ({ listing, openPopup }) => {
   const [images, setImages] = useState([]);
   const [revenue, setRevenue] = useState([]);
 
-  const server = 'seller-kin-task1-server.vercel.app';
+  const server = 'https://seller-kin-task1-server.vercel.app';
   //const server = 'http://localhost:3000';
 
   const truncateText = (text, maxLength) => {
@@ -37,6 +37,7 @@ const Card = ({ listing, openPopup }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(`${server}/economic?id=${listing.listing_id}`);
+        
         if (response.ok) {
           const result = await response.json();
           setRevenue(result || []);
