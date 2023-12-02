@@ -4,7 +4,13 @@ const crypto = require("crypto");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3001", // Update with your frontend URL
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  })
+);
 
 async function startServer() {
   try {
@@ -12,6 +18,7 @@ async function startServer() {
 
     const port = 3000;
     const baseurl = `seller-kin-task1-server.vercel.app`;
+    // const baseurl = `http://localhost:${port}`;
     dotenv.config();
     const apitoken = process.env.API_TOKEN;
     const contexts = "listings_r";
@@ -31,7 +38,7 @@ async function startServer() {
     const codeChallenge = base64URLEncode(sha256(codeVerifier));
     const state = Math.random().toString(36).substring(7);
 
-    const buildMyUrl = `https://www.etsy.com/oauth/connect?response_type=code&redirect_uri=seller-kin-task1-server.vercel.app/callback&scope=${contexts}&client_id=${apitoken}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+    const buildMyUrl = `https://www.etsy.com/oauth/connect?response_type=code&redirect_uri=${baseurl}/callback&scope=${contexts}&client_id=${apitoken}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 
     app.get("/ping", async (req, res) => {
       const requestOptions = {
@@ -52,6 +59,10 @@ async function startServer() {
       } else {
         res.send("oops");
       }
+    });
+
+    app.get("/auth", async (req, res) => {
+      res.redirect(`${baseurl}/`);
     });
 
     app.get("/", async (req, res) => {
@@ -148,7 +159,7 @@ async function startServer() {
 
     const clientID = apitoken;
     const clientVerifier = codeVerifier;
-    const redirectUri = "seller-kin-task1-server.vercel.app/callback";
+    const redirectUri = `${baseurl}/callback`;
 
     app.get("/callback", async (req, res) => {
       const authCode = req.query.code;
@@ -180,6 +191,29 @@ async function startServer() {
       } catch (error) {
         res.send(error);
       }
+    });
+
+    const sendRequestToEndpoint = async () => {
+      try {
+        const response = await fetch(`${baseurl}/list`);
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Request sent successfully!", data);
+        } else {
+          console.error("Failed to send request.");
+        }
+      } catch (error) {
+        console.error("Error sending request:", error);
+      }
+    };
+
+    // Function to send a request to /list endpoint every 20 minutes
+    const intervalId = setInterval(sendRequestToEndpoint, 20 * 60 * 1000);
+
+    // Handle server shutdown to clear the interval
+    process.on("SIGINT", () => {
+      clearInterval(intervalId); // Clear interval on server shutdown
+      process.exit(0);
     });
 
     app.listen(port, () => {

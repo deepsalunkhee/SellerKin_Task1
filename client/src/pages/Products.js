@@ -2,12 +2,26 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Header from '../components/Header';
 import Cards from '../components/Cards';
 import './Product.css'; 
+import Popup from '../pages/Popup';
+import Snowfall from 'react-snowfall'
+
+
+import Search from '../components/Search';
+
 
 const Products = () => {
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedListing, setSelectedListing] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+ 
+  //const server = 'http://localhost:3000';
+  const server = 'seller-kin-task1-server.vercel.app';
+  
 
   const sendRequestToEndpoint = useCallback(() => {
-    fetch('seller-kin-task1-server.vercel.app/', {
+    fetch(`${server}/auth`, {
       method: 'GET', 
     })
     .then(response => {
@@ -18,13 +32,13 @@ const Products = () => {
       }
     })
     .catch(error => {
-      console.error('Error sending request:', error);
+      console.error('Error sending request: to server', error);
     });
   }, []);
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch('seller-kin-task1-server.vercel.app/list');
+      const response = await fetch(`${server}/list`);
       if (response.ok) {
         const result = await response.json();
         setData(result.results || []); 
@@ -37,23 +51,62 @@ const Products = () => {
   }, []);
 
   useEffect(() => {
+    //sendRequestToEndpoint(); // Send request to server on initial render
     fetchData(); // Fetch data on initial render
 
-    const intervalId = setInterval(sendRequestToEndpoint, 20 * 60 * 1000);
+    
 
-    return () => {
-      clearInterval(intervalId); // Clear interval on component unmount
-    };
+    
   }, [fetchData, sendRequestToEndpoint]);
 
+  const handleSearch = useCallback(
+    (query) => {
+      setSearchQuery(query);
+    },
+    []
+  );
+
+  useEffect(() => {
+    const filteredResults = data.filter((listing) =>
+      listing.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredData(filteredResults);
+  }, [data, searchQuery]);
+
+  const openPopup = (listing) => {
+    setSelectedListing(listing);
+    setShowPopup(true);
+    console.log(listing);
+  };
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
   return (
-    <div>
+    <div className='product-container' >
+      <Snowfall className="snowfall"
+        
+        color='lightblue'
+        snowflakeCount={100}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          pointerEvents: 'none',
+        }}
+
+      />
       <Header />
+      <Search handleSearch={handleSearch} /> {/* Include the Search component */}
+
       <div className="card-container">
-        {data.map((listing, index) => (
-          <Cards key={index} listing={listing} />
+        {filteredData.map((listing, index) => (
+          <Cards key={index} listing={listing} openPopup={openPopup}   />
         ))}
       </div>
+      {showPopup && <Popup selectedListing={selectedListing} closePopup={closePopup} />}
     </div>
   );
 };

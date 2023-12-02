@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import './Cards.css'; 
+import './Cards.css'; // Import the CSS file for Cards component
 
-const Card = ({ listing }) => {
+const Card = ({ listing, openPopup }) => {
   const [images, setImages] = useState([]);
-  const[revenue,setRevenue]=useState([]);
+  const [revenue, setRevenue] = useState([]);
 
-  
+  const server = 'seller-kin-task1-server.vercel.app';
+  //const server = 'http://localhost:3000';
+
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
-      return text.substring(0, maxLength - 3) + '...'; 
+      return text.substring(0, maxLength - 3) + '...';
     }
     return text;
   };
@@ -16,10 +18,10 @@ const Card = ({ listing }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`seller-kin-task1-server.vercel.app/images?id=${listing.listing_id}`);
+        const response = await fetch(`${server}/images?id=${listing.listing_id}`);
         if (response.ok) {
           const result = await response.json();
-          setImages(result.results || []); 
+          setImages(result.results || []);
         } else {
           console.error('Failed to fetch data');
         }
@@ -34,11 +36,11 @@ const Card = ({ listing }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`seller-kin-task1-server.vercel.app/economic?id=${listing.listing_id}`);
+        const response = await fetch(`${server}/economic?id=${listing.listing_id}`);
         if (response.ok) {
           const result = await response.json();
           setRevenue(result || []);
-           console.log(revenue.price.amount);
+
         } else {
           console.error('Failed to fetch data');
         }
@@ -50,16 +52,14 @@ const Card = ({ listing }) => {
     fetchData();
   }, [listing.listing_id]);
 
-
-
   return (
-    <div className="card">
+    <div className="card" onClick={() => openPopup(listing)}>
       {images.length > 0 && (
         <img src={images[0].url_170x135} alt={listing.title} />
       )}
       <h3>{truncateText(listing.title, 30)}</h3>
-      <p>Description: {truncateText(listing.description, 100)}</p> 
-      <p>Sales:{Math.ceil(revenue.views*0.0399 +  revenue.num_favorers*0.175)}</p>
+      <p>Description: {truncateText(listing.description, 100)}</p>
+      <p>Sales: {Math.ceil(revenue.views * 0.0399 + revenue.num_favorers * 0.175)}</p>
     </div>
   );
 };
